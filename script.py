@@ -3,7 +3,7 @@ import openai
 from datetime import datetime
 
 # Load your API key securely from an environment variable
-api_key = os.getenv("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")
+api_key = os.getenv("API_Key")
 openai.api_key = api_key
 
 # Mock function for sentiment analysis
