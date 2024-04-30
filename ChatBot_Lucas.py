@@ -3,7 +3,7 @@ pip install openai==0.28
 import openai
 
 # Set your OpenAI API key
-api_key = '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'
+api_key = 'API_Key'
 openai.api_key = api_key
 
 def chat_with_openai():
