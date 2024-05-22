@@ -1,26 +1,43 @@
+import os
 import openai
-import re
+from datetime import datetime
 
-openai.api_key = "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"
+# Load your API key securely from an environment variable
+api_key = os.getenv("API_Key")
+openai.api_key = api_key
 
-def generate_response(prompt):
-  completions = openai.Completion.create(
-    engine="text-davinci-002",
-    prompt=prompt,
-    max_tokens=2048,
-    n=1,
-    stop=None,
-    temperature=0.7,
-  )
+# Mock function for sentiment analysis
+def analyze_sentiment(text):
+    # Placeholder function for sentiment analysis
+    return "Neutral"
 
-  message = completions.choices[0].text
-  return message
+# Mock function for summarizing the conversation
+def summarize_conversation(messages):
+    # Placeholder function for summarizing the conversation
+    return "Summary of the conversation."
 
-while True:
-  prompt = input("Moi: ")
-  response = generate_response(prompt)
-  print("Assistant: ", response)
+def main():
+    print("Bonjour. N'hésitez pas à me poser des questions. Ou appuyez sur 'exit' pour quitter!")
+    messages = [{"role": "system", "content": "Tu es un assistant scientifique précis et formel"}]
+    while True:
+        user_input = input("> ")
+        if user_input.lower() == "exit":
+            print(summarize_conversation(messages))
+            print("Fin de la conversation. Au revoir!")
+            break
+        timestamp = datetime.now().isoformat()
+        messages.append({"role": "user", "content": user_input, "timestamp": timestamp})
+        
+        try:
+            response = openai.ChatCompletion.create(
+                model="gpt-3.5-turbo",
+                messages=messages
+            ).choices[0].message
+            print(response['content'])
+            print("Sentiment:", analyze_sentiment(response['content']))
+            messages.append({"role": "assistant", "content": response['content'], "timestamp": timestamp})
+        except Exception as e:
+            print(f"An error occurred: {e}")
 
-
-
-
+# To prevent the code from running automatically, the call to main() is commented out.
+# main()
